@@ -1,3 +1,6 @@
+"use strict";
+
+// Шаблоны для отрисовки.
 const createMenuTemplate = () => {
     return (
         `<section class="control__btn-wrap">
@@ -159,7 +162,42 @@ const createSortTemplate = () => {
     );
 };
 
+const createBorderTemplate = () => {
+  return(
+    `<section class="board container">
+    <div class="board__tasks"></div>
+    </section>`
+  );
+};
 
-const render = (container, template, place) => {
+
+/**
+    * Функция отрисовки.
+    * @param container - Контейнер, куда будет отрисован элемент.
+    * @param template - Элемент, который будет отрисован.
+    * @param place - Место, куда будет отрисован. По умолчанию: перед закрытием container. Можно посмотреть подсказку по insertAdjacentHTML.
+    */
+const render = (container, template, place = `beforeend`) => {
     container.insertAdjacentHTML(place, template);
 };
+
+
+// Запросы на получения нужного селектора и отрисовка элементов..
+const siteMainElement = document.querySelector(`.main`);
+const siteHeaderElement = siteMainElement.querySelector(`.main__control`);
+// Отрисовка основной части.
+render(siteHeaderElement, createMenuTemplate());
+render(siteMainElement, createFilterTemplate());
+render(siteMainElement, createBorderTemplate());
+
+// Получение основного элемента доски для последющей отрисовки. 
+const siteBorderElement = siteMainElement.querySelector(`.board`);
+render(siteBorderElement, createSortTemplate(), 'afterbegin');
+
+// Получение элемента доски и отрисовка карточек.
+const siteTaskBorderElement = siteBorderElement.querySelector(`.board__tasks`);
+render(siteTaskBorderElement, createCardTemplate());
+render(siteTaskBorderElement, createCardTemplate());
+render(siteTaskBorderElement, createCardTemplate());
+// Отрисовка кнопки.
+render(siteTaskBorderElement, createButtonTemplate());
